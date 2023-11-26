@@ -50,11 +50,12 @@ public class AVLTree {
         }
     }
 
-    public Node get(int key) {
-        return search(key, root);
+    public String get(int key) {
+        Node n = search(key, root);
+        return n == null ? null : n.value;
     }
 
-    public void put(int key, String value) {
+    public String put(int key, String value) {
         Node node = this.insertionSearch(key, this.root);
         if (node == null) {
             System.out.println("The key is already in the tree.");
