@@ -74,4 +74,17 @@ public class AVLTree {
         }
 
     }
+
+    public void allKeys() {
+        traversal(this.root);
+    }
+
+    private void traversal(Node node)
+    {
+        if (!this.isExternal(node)) {
+            traversal(node.left);
+            System.out.println(node.key);
+            traversal(node.right);
+        }
+    }
 }
