@@ -38,6 +38,22 @@ public class AVLTree {
         }
     }
 
+    private Node parentSearch(int key, Node node) {
+        if (this.isExternal(node)) {
+            return null;
+        }
+
+        if (key == node.left.key || key == node.right.key) {
+            return node;
+        }
+        else if (key < node.key) {
+            return parentSearch(key, node.left);
+        }
+        else {
+            return parentSearch(key, node.right);
+        }
+    }
+
     private Node insertionSearch(int key, Node node) {
         if (this.isExternal(node) || key == node.key) {
             return node;
