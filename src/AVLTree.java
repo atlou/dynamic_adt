@@ -38,6 +38,12 @@ public class AVLTree {
         }
     }
 
+    // returns the parent of node
+    // returns null if node is root
+    private Node parent(int key) {
+        return parentSearch(key, this.root);
+    }
+
     private Node parentSearch(int key, Node node) {
         if (this.isExternal(node)) {
             return null;
