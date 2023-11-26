@@ -7,7 +7,7 @@ public class AVLTree {
 
         public Node() {
             this.key = 0;
-            this.value = "";
+            this.value = null;
             this.left = null;
             this.right = null;
         }
@@ -16,7 +16,7 @@ public class AVLTree {
     private Node root;
 
     public AVLTree() {
-        this.root = null;
+        this.root = new Node();
     }
 
     private boolean isExternal(Node node) {
@@ -39,17 +39,14 @@ public class AVLTree {
     }
 
     private Node insertionSearch(int key, Node node) {
-        if (this.isExternal(node)) {
+        if (this.isExternal(node) || key == node.key) {
             return node;
         }
         if (key < node.key) {
-            return search(key, node.left);
-        }
-        else if (key == node.key) {
-            return null;
+            return insertionSearch(key, node.left);
         }
         else {
-            return search(key, node.right);
+            return insertionSearch(key, node.right);
         }
     }
 
