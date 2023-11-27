@@ -2,6 +2,7 @@ package avl;
 
 import avl.exceptions.NoNextKey;
 import avl.exceptions.KeyNotFound;
+import avl.exceptions.NoPreviousKey;
 
 public class AVLTree {
     private class Node {
@@ -143,7 +144,7 @@ public class AVLTree {
 
     private Node next(Node node) {
         if (this.isExternal(node)) return null;
-        if(node.right.value != null) return node.right;
+        if(!isExternal(node.right) || isRoot(node)) return leftmostNode(node.right);
 
         Node p = this.parent(node);
         if(node.key < p.key) {
@@ -154,6 +155,56 @@ public class AVLTree {
             // n is a right child
             // move up the tree until we find a left child and return its parent
             return leftChildSearch(node);
+        }
+    }
+
+    public int prevKey(int key) throws NoPreviousKey, KeyNotFound {
+        Node n = search(key, this.root);
+        if(n == null) throw new KeyNotFound(key);
+
+        Node prev = this.prev(n);
+        if(prev == null) throw new NoPreviousKey(key);
+
+        return prev.key;
+    }
+
+    // TODO: write this
+    private Node prev(Node node) {
+//        if n has left child
+//            go to left child, and then go right to rightmost
+//	    else if n is left child
+//            move up the tree until a right child and return its parent (or return root)
+//	    else if n is right child
+//            return parent of n
+
+        if (this.isExternal(node)) return null;
+        if(!isExternal(node.left) || isRoot(node)) return rightmostNode(node.left);
+
+        Node p = this.parent(node);
+        if(node.key < p.key) {
+            // n is a left child
+            // so the next key is its parent
+            return rightChildSearch(node);
+        } else {
+            // n is a right child
+            // move up the tree until we find a left child and return its parent
+            return p;
+        }
+    }
+
+    private Node rightmostNode(Node node) {
+        if(!isExternal(node.right)) {
+            return rightmostNode(node.right);
+        } else {
+            return node;
+        }
+    }
+
+    private Node leftmostNode(Node node) {
+        if(!isExternal(node.left)) {
+            return rightmostNode(node.left);
+        } else {
+            return node;
         }
     }
 
