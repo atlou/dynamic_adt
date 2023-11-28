@@ -53,16 +53,40 @@ public class BinarySearchTree {
     //--------------- Removal ---------------//
     public String remove(int key) {
         System.out.println("Removing key " + key);
+
         Node n = getNode(key);
+        if(n == null) return null;
+
+        String val = n.value;
+
         if(isExternal(n.left)) {
             removeExternal(n.left);
         } else if(isExternal(n.right)) {
             removeExternal(n.right);
         } else {
-            System.out.println("Node has two inner children.");
+            // find internal node w that follows n in inorder traversal
+            Node w = leftmost(n.right);
+            // copy w into n
+            int k = w.key;
+            String v = w.value;
+            // remove w and its left child using removeExternal()
+            removeExternal(w.left);
+            n.key = k;
+            n.value = v;
         }
-        return "";
+
+        return val;
     }
+
+//    private void removeRecursive(Node node) {
+//        if(isExternal(node.left)) {
+//            removeExternal(node.left);
+//        } else if (isExternal(node.right)) {
+//            removeExternal(node.right);
+//        } else {
+//
+//        }
+//    }
 
     // removes node and its parent
     private void removeExternal(Node node) {
