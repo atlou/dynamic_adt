@@ -52,7 +52,7 @@ public class BinarySearchTree {
 
     //--------------- KEY RANGE ---------------//
     public int rangeKey(int key1, int key2) {
-        if(key1 > key2) {
+        if(key1 < key2) {
             return this.rangeTraversal(key1, key2, this.root);
         } else {
             return this.rangeTraversal(key2, key1, this.root);
