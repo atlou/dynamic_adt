@@ -1,18 +1,18 @@
 public class BinarySearchTree {
     private class Node {
-        int key;
+        long key;
         String value;
         Node left;
         Node right;
 
-        public Node(int key, String value) {
+        public Node(long key, String value) {
             this.key = key;
             this.value = value;
             this.left = new Node(key);
             this.right = new Node(key);
         }
 
-        public Node(int key) {
+        public Node(long key) {
             this.key = key;
             this.value = null;
             this.left = null;
@@ -92,7 +92,7 @@ public class BinarySearchTree {
             // find internal node w that follows n in inorder traversal
             Node w = this.leftmost(n.right);
             // copy w into n
-            int k = w.key;
+            long k = w.key;
             String v = w.value;
             // remove w and its left child using removeExternal()
             this.removeExternal(w.left);
@@ -110,8 +110,6 @@ public class BinarySearchTree {
             return;
         }
 
-        // delete parent of external
-            // make grandparent link to the other child of parent
         Node p = this.getParent(node);
         if(p == null) {
             System.out.printf("Could not find parent of %d.\n", node.key);
@@ -134,7 +132,7 @@ public class BinarySearchTree {
 
     //--------------- Insertion ---------------//
 
-    public String put(int key, String value) {
+    public String put(long key, String value) {
         Node n = this.search(key, this.root);
 
         if(this.isExternal(n)) {
@@ -153,7 +151,7 @@ public class BinarySearchTree {
 
     //--------------- Parent ---------------//
     // TEST for parentSearch()
-    public int getParentTest(int key) {
+    public long getParentTest(long key) {
         Node c = getNode(key);
         Node p = searchParent(c, this.root);
         if(p != null) {
@@ -183,7 +181,7 @@ public class BinarySearchTree {
     }
 
     //--------------- Search ---------------//
-    private Node search(int key, Node curr) {
+    private Node search(long key, Node curr) {
         if(this.isExternal(curr) || key == curr.key) {
             return curr;
         } else if (key < curr.key) {
@@ -193,7 +191,7 @@ public class BinarySearchTree {
         }
     }
 
-    public String getValue(int key) {
+    public String getValue(long key) {
         Node n = search(key, this.root);
         if(this.isExternal(n)) {
             return null;
@@ -201,19 +199,19 @@ public class BinarySearchTree {
         return n.value;
     }
 
-    private Node getNode(int key) {
+    private Node getNode(long key) {
         return search(key, this.root);
     }
 
     //--------------- Next ---------------//
-    public int nextKey(int key) {
+    public long nextKey(long key) {
         Node next = this.searchNext(key, this.root, null);
         if(next != null) return next.key;
 
         return -2; // TODO: Implement exception instead
     }
 
-    private Node searchNext(int key, Node curr, Node best) {
+    private Node searchNext(long key, Node curr, Node best) {
         if(this.isExternal(curr)) {
             return best;
         }
@@ -231,14 +229,14 @@ public class BinarySearchTree {
     }
 
     //--------------- Prev ---------------//
-    public int prevKey(int key) {
+    public long prevKey(long key) {
         Node prev = this.searchPrevious(key, this.root, null);
         if(prev != null) return prev.key;
 
         return -2; // TODO: Implement exception instead
     }
 
-    private Node searchPrevious(int key, Node curr, Node best) {
+    private Node searchPrevious(long key, Node curr, Node best) {
         if(this.isExternal(curr)) {
             return best;
         }
