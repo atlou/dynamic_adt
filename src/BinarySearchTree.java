@@ -34,7 +34,7 @@ public class BinarySearchTree {
         return node == this.root;
     }
 
-    //--------------- ALLKEYS ---------------//
+    //--------------- ALL KEYS ---------------//
     // TEST: allKeys
     public void allKeys() {
         System.out.println("ALL KEYS");
@@ -50,43 +50,58 @@ public class BinarySearchTree {
         }
     }
 
+    //--------------- KEY RANGE ---------------//
+    public int rangeKey(int key1, int key2) {
+        if(key1 > key2) {
+            return this.rangeTraversal(key1, key2, this.root);
+        } else {
+            return this.rangeTraversal(key2, key1, this.root);
+        }
+    }
+
+    private int rangeTraversal(int min, int max, Node curr) {
+        int sum = 0;
+        if(!this.isExternal(curr)) {
+            if(curr.key > min && curr.key < max) {
+                sum++;
+            }
+            if(curr.key > min) {
+                sum += rangeTraversal(min, max, curr.left);
+            }
+            if(curr.key < max) {
+                sum += rangeTraversal(min, max, curr.right);
+            }
+        }
+        return sum;
+    }
+
     //--------------- Removal ---------------//
     public String remove(int key) {
         System.out.println("Removing key " + key);
 
-        Node n = getNode(key);
+        Node n = this.getNode(key);
         if(n == null) return null;
 
         String val = n.value;
 
-        if(isExternal(n.left)) {
-            removeExternal(n.left);
-        } else if(isExternal(n.right)) {
-            removeExternal(n.right);
+        if(this.isExternal(n.left)) {
+            this.removeExternal(n.left);
+        } else if(this.isExternal(n.right)) {
+            this.removeExternal(n.right);
         } else {
             // find internal node w that follows n in inorder traversal
-            Node w = leftmost(n.right);
+            Node w = this.leftmost(n.right);
             // copy w into n
             int k = w.key;
             String v = w.value;
             // remove w and its left child using removeExternal()
-            removeExternal(w.left);
+            this.removeExternal(w.left);
             n.key = k;
             n.value = v;
         }
 
         return val;
     }
-
-//    private void removeRecursive(Node node) {
-//        if(isExternal(node.left)) {
-//            removeExternal(node.left);
-//        } else if (isExternal(node.right)) {
-//            removeExternal(node.right);
-//        } else {
-//
-//        }
-//    }
 
     // removes node and its parent
     private void removeExternal(Node node) {
