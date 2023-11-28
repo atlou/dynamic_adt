@@ -35,23 +35,30 @@ public class BinarySearchTree {
     }
 
     //--------------- ALL KEYS ---------------//
-    // TEST: allKeys
-    public void allKeys() {
+    public long[] allKeys() {
         System.out.println("ALL KEYS");
-        traversal(this.root);
+        int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
+        long[] keys = new long[n];
+        inorder(this.root, keys, 0);
+        return keys;
     }
 
-
-    private void traversal(Node node) {
+    // O(n) time
+    // array is O(n) space
+    private int inorder(Node node, long[] arr, int i) {
         if(!this.isExternal(node)) {
-            traversal(node.left);
-            System.out.println(node.key);
-            traversal(node.right);
+            i = inorder(node.left, arr, i);
+//            System.out.printf("Inserting key %d at i %d\n", node.key, i);
+            arr[i] = node.key;
+            i++;
+            i = inorder(node.right, arr, i);
+            return i;
         }
+        return i;
     }
 
     //--------------- KEY RANGE ---------------//
-    public int rangeKey(int key1, int key2) {
+    public int rangeKey(long key1, long key2) {
         if(key1 < key2) {
             return this.rangeTraversal(key1, key2, this.root);
         } else {
@@ -59,7 +66,7 @@ public class BinarySearchTree {
         }
     }
 
-    private int rangeTraversal(int min, int max, Node curr) {
+    private int rangeTraversal(long min, long max, Node curr) {
         int sum = 0;
         if(!this.isExternal(curr)) {
             if(curr.key > min && curr.key < max) {
@@ -76,7 +83,7 @@ public class BinarySearchTree {
     }
 
     //--------------- Removal ---------------//
-    public String remove(int key) {
+    public String remove(long key) {
         System.out.println("Removing key " + key);
 
         Node n = this.getNode(key);
@@ -104,6 +111,7 @@ public class BinarySearchTree {
     }
 
     // removes node and its parent
+    // TODO: Add exceptions instead of prints
     private void removeExternal(Node node) {
         if(!this.isExternal(node)) {
             System.out.printf("removeExternal fail: %d is not external.\n", node.key);
@@ -128,6 +136,7 @@ public class BinarySearchTree {
         } else {
             gp.left = otherChild;
         }
+
     }
 
     //--------------- Insertion ---------------//
