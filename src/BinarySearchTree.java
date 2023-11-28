@@ -5,13 +5,6 @@ public class BinarySearchTree {
         Node left;
         Node right;
 
-        public Node(long key, String value) {
-            this.key = key;
-            this.value = value;
-            this.left = new Node(key);
-            this.right = new Node(key);
-        }
-
         public Node(long key) {
             this.key = key;
             this.value = null;
@@ -35,6 +28,8 @@ public class BinarySearchTree {
     }
 
     //--------------- ALL KEYS ---------------//
+    // O(n) time
+    // array is O(n) space
     public long[] allKeys() {
         System.out.println("ALL KEYS");
         int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
@@ -43,8 +38,6 @@ public class BinarySearchTree {
         return keys;
     }
 
-    // O(n) time
-    // array is O(n) space
     private int inorder(Node node, long[] arr, int i) {
         if(!this.isExternal(node)) {
             i = inorder(node.left, arr, i);
@@ -58,6 +51,8 @@ public class BinarySearchTree {
     }
 
     //--------------- KEY RANGE ---------------//
+    // O(n) time
+    // O(1) space
     public int rangeKey(long key1, long key2) {
         if(key1 < key2) {
             return this.rangeTraversal(key1, key2, this.root);
@@ -119,6 +114,7 @@ public class BinarySearchTree {
         }
 
         Node p = this.getParent(node);
+
         if(p == null) {
             System.out.printf("Could not find parent of %d.\n", node.key);
             return;
@@ -140,7 +136,6 @@ public class BinarySearchTree {
     }
 
     //--------------- Insertion ---------------//
-
     public String put(long key, String value) {
         Node n = this.search(key, this.root);
 
@@ -159,24 +154,10 @@ public class BinarySearchTree {
     }
 
     //--------------- Parent ---------------//
-    // TEST for parentSearch()
-    public long getParentTest(long key) {
-        Node c = getNode(key);
-        Node p = searchParent(c, this.root);
-        if(p != null) {
-            return p.key;
-        }
-        return -2;
-    }
-
     private Node getParent(Node child) {
         return searchParent(child, this.root);
     }
 
-    /*
-    returns the parent if it exists,
-    returns null otherwise
-    */
     private Node searchParent(Node child, Node curr) {
         if(curr.left == child || curr.right == child) {
             return curr;
@@ -278,8 +259,4 @@ public class BinarySearchTree {
             return curr;
         }
     }
-
-    // next()
-    // prev()
-    // listAll()
 }
