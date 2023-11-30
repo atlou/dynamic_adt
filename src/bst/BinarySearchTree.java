@@ -138,10 +138,9 @@ public class BinarySearchTree {
         int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
         long[] keys = new long[n];
         inorder(this.root, keys, 0);
-        System.out.printf("Root: %d\n", this.root.key);
-        System.out.printf("Root balance: %d\n", this.balanceFactor(this.root));
-        System.out.printf("Left (key:%d) height: %d\n", this.root.left.key,  this.root.left.height);
-        System.out.printf("Right (key:%d) height: %d\n", this.root.right.key, this.root.right.height);
+        System.out.printf("[Root] key: %d, height: %d, balance: %d\n", this.root.key, this.root.height, this.balanceFactor(this.root));
+        System.out.printf("[Left] key: %d, height: %d, balance: %d\n", this.root.left.key,  this.root.left.height, this.balanceFactor(this.root.left));
+        System.out.printf("[Right] key: %d, height: %d, balance: %d\n", this.root.right.key, this.root.right.height, this.balanceFactor(this.root.right));
         return keys;
     }
 
@@ -396,7 +395,7 @@ public class BinarySearchTree {
 
     private Node leftmost(Node curr) {
         if (!isExternal(curr.left)) {
-            return leftmost(curr);
+            return leftmost(curr.left);
         } else {
             return curr;
         }

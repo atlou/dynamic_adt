@@ -28,6 +28,16 @@ class BinarySearchTreeTest {
 
     @Test
     void rangeKey() {
+        BinarySearchTree bst = new BinarySearchTree();
+        for (int i = 1; i <= 50; i++) {
+            bst.put(i, Integer.toString(i));
+        }
+        System.out.println("Range: " + bst.rangeKey(0, 100));
+        bst.remove(4);
+        bst.remove(5);
+        bst.remove(6);
+        bst.remove(40);
+        System.out.println("Range: " + bst.rangeKey(0, 100));
     }
 
     @Test
@@ -37,19 +47,14 @@ class BinarySearchTreeTest {
         for (int i = 1; i <= 10; i++) {
             bst.put(i, Integer.toString(i));
         }
-        long[] keys = bst.allKeys();
-        System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, keys);
 
+        bst.remove(4);
+        bst.remove(2);
+        bst.remove(5);
+        bst.remove(10);
         bst.remove(1);
-        keys = bst.allKeys();
-        System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[]{2, 3, 4, 5, 6, 7, 8, 9, 10}, keys);
 
-        bst.remove(3);
-        keys = bst.allKeys();
-        System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[]{2, 4, 5, 6, 7, 8, 9, 10}, keys);
+        Assertions.assertArrayEquals(new long[]{3, 6, 7, 8, 9}, bst.allKeys());
     }
 
     @Test
