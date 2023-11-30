@@ -138,6 +138,7 @@ public class BinarySearchTree {
         int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
         long[] keys = new long[n];
         inorder(this.root, keys, 0);
+        System.out.printf("Root: %d\n", this.root.key);
         System.out.printf("Root balance: %d\n", this.balanceFactor(this.root));
         System.out.printf("Left (key:%d) height: %d\n", this.root.left.key,  this.root.left.height);
         System.out.printf("Right (key:%d) height: %d\n", this.root.right.key, this.root.right.height);
@@ -241,6 +242,23 @@ public class BinarySearchTree {
             gp.left = otherChild;
         }
 
+        this.updateHeight(gp);
+
+        Node z = this.firstUnbalanced(gp);
+        while(z != null) {
+            Node b = this.restructure(z);
+            if(z == this.root) {
+                this.root = b;
+            } else {
+                Node c = this.getParent(z);
+                if(c.right == z) {
+                    c.right = b;
+                } else {
+                    c.left = b;
+                }
+            }
+            z = this.firstUnbalanced(b);
+        }
     }
 
     //--------------- Insertion ---------------//

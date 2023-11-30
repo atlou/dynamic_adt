@@ -1,5 +1,7 @@
 package tests;
+
 import bst.*;
+
 import java.util.Random;
 import java.util.Arrays;
 
@@ -15,7 +17,7 @@ class BinarySearchTreeTest {
         Random rand = new Random();
         BinarySearchTree bst = new BinarySearchTree();
         long[] keys = new long[40];
-        for(int i = 0; i < keys.length; i++) {
+        for (int i = 0; i < keys.length; i++) {
             keys[i] = rand.nextLong();
             bst.put(keys[i], Long.toString(keys[i]));
         }
@@ -30,29 +32,47 @@ class BinarySearchTreeTest {
 
     @Test
     void remove() {
+        BinarySearchTree bst = new BinarySearchTree();
+
+        for (int i = 1; i <= 10; i++) {
+            bst.put(i, Integer.toString(i));
+        }
+        long[] keys = bst.allKeys();
+        System.out.println(Arrays.toString(keys));
+        Assertions.assertArrayEquals(new long[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, keys);
+
+        bst.remove(1);
+        keys = bst.allKeys();
+        System.out.println(Arrays.toString(keys));
+        Assertions.assertArrayEquals(new long[]{2, 3, 4, 5, 6, 7, 8, 9, 10}, keys);
+
+        bst.remove(3);
+        keys = bst.allKeys();
+        System.out.println(Arrays.toString(keys));
+        Assertions.assertArrayEquals(new long[]{2, 4, 5, 6, 7, 8, 9, 10}, keys);
     }
 
     @Test
     void put() {
         BinarySearchTree bst = new BinarySearchTree();
-        for(int i = 10; i <= 50; i += 10) {
+        for (int i = 10; i <= 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
         long[] keys = bst.allKeys();
         System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[] {10, 20, 30, 40, 50}, keys);
-        for(int i = 10; i <= 50; i += 10) {
+        Assertions.assertArrayEquals(new long[]{10, 20, 30, 40, 50}, keys);
+        for (int i = 10; i <= 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
         keys = bst.allKeys();
         System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[] {10, 20, 30, 40, 50}, keys);
-        for(int i = 1; i <= 5; i++) {
+        Assertions.assertArrayEquals(new long[]{10, 20, 30, 40, 50}, keys);
+        for (int i = 1; i <= 5; i++) {
             bst.put(i, Integer.toString(i));
         }
         keys = bst.allKeys();
         System.out.println(Arrays.toString(keys));
-        Assertions.assertArrayEquals(new long[] {1, 2, 3, 4, 5, 10, 20, 30, 40, 50}, keys);
+        Assertions.assertArrayEquals(new long[]{1, 2, 3, 4, 5, 10, 20, 30, 40, 50}, keys);
     }
 
     @Test
@@ -78,7 +98,7 @@ class BinarySearchTreeTest {
     @Test
     void nextKey() {
         BinarySearchTree bst = new BinarySearchTree();
-        for(int i = 10; i <= 50; i += 10) {
+        for (int i = 10; i <= 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
         long a = bst.nextKey(10);
@@ -101,7 +121,7 @@ class BinarySearchTreeTest {
     @Test
     void prevKey() {
         BinarySearchTree bst = new BinarySearchTree();
-        for(int i = 10; i < 50; i += 10) {
+        for (int i = 10; i < 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
         long a = bst.prevKey(10);
