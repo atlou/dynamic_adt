@@ -1,9 +1,12 @@
+package bst;
+
 public class BinarySearchTree {
     private class Node {
         long key;
         String value;
         Node left;
         Node right;
+        int height;
 
         public Node(long key) {
             this.key = key;
@@ -23,15 +26,121 @@ public class BinarySearchTree {
         return node.left == null && node.right == null;
     }
 
+    //--------------- AVL TREE ---------------//
+    private Node restructure(Node z) {
+        /*
+        left-heavy
+            right (Z>Y>X)
+            left-right (Z>X>Y)
+        right-heavy
+            left (Z<Y<X)
+            right-left (Z<X<Y)
+         */
+        int bal = this.balanceFactor(z);
+        if(bal > 1) {
+            // left heavy
+            Node y = z.left;
+            if(this.balanceFactor(y) >= 0) {
+                z = rotationRight(z);
+            } else {
+                z = rotationLeftRight(z);
+            }
+        }
+
+        if (bal < -1) {
+            // right heavy
+            Node y = z.right;
+            if(this.balanceFactor(y) <= 0) {
+                z = rotationLeft(z);
+            } else {
+                z = rotationRightLeft(z);
+            }
+        }
+
+        return z;
+    }
+
+    private int getHeight(Node node) {
+        if(node == null) {
+            return 0;
+        }
+        return node.height;
+    }
+
+    private void updateHeight(Node node) {
+        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+    }
+
+    // positive number -> left heavy
+    // negative number -> right heavy
+    private int balanceFactor(Node node) {
+        if(isExternal(node)) {
+            return 0;
+        } else {
+            return getHeight(node.left) - getHeight(node.right);
+        }
+    }
+
+    private Node rotationLeft(Node z) {
+        Node y = z.right;
+        z.right = y.left;
+        y.left = z;
+        updateHeight(z);
+        updateHeight(y);
+        return y;
+    }
+
+    private Node rotationRight(Node z) {
+        Node y = z.left;
+        z.left = y.right;
+        y.right = z;
+        updateHeight(z);
+        updateHeight(y);
+        return y;
+    }
+
+    private Node rotationRightLeft(Node z) {
+        Node y = z.right;
+        z.right = rotationRight(y);
+        return rotationLeft(z);
+    }
+
+    private Node rotationLeftRight(Node z) {
+        Node y = z.left;
+        z.left = rotationLeft(y);
+        return rotationRight(z);
+    }
+
+    private boolean isUnbalanced(Node n) {
+        int bal = this.balanceFactor(n);
+        return bal > 1 || bal < -1;
+    }
+
+    private Node firstUnbalanced(Node curr) {
+        Node p = this.getParent(curr);
+        if(p == null) {
+            return null;
+        }
+
+        this.updateHeight(p);
+        if(this.isUnbalanced(p)) {
+            return p;
+        }
+
+        return firstUnbalanced(p);
+    }
+
     //--------------- ALL KEYS ---------------//
 
     // O(n) time
     // array is O(n) space
     public long[] allKeys() {
-        System.out.println("ALL KEYS");
         int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
         long[] keys = new long[n];
         inorder(this.root, keys, 0);
+        System.out.printf("Root balance: %d\n", this.balanceFactor(this.root));
+        System.out.printf("Left (key:%d) height: %d\n", this.root.left.key,  this.root.left.height);
+        System.out.printf("Right (key:%d) height: %d\n", this.root.right.key, this.root.right.height);
         return keys;
     }
 
