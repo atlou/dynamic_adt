@@ -253,9 +253,27 @@ public class BinarySearchTree {
             n.value = value;
             n.left = new Node(key);
             n.right = new Node(key);
+
+            this.updateHeight(n);
+
+            Node z = this.firstUnbalanced(n);
+            if(z != null) {
+                Node b = this.restructure(z);
+                if(z == this.root) {
+                    this.root = b;
+                } else {
+                    Node p = this.getParent(z);
+                    if(p.right == z) {
+                        p.right = b;
+                    } else {
+                        p.left = b;
+                    }
+                }
+            }
             return null;
+
         } else {
-            // key already in tree
+            // key already in tree, just replace value
             String old = n.value;
             n.value = value;
             return old;
