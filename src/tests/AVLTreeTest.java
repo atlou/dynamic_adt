@@ -37,6 +37,8 @@ class AVLTreeTest {
         bst.remove(6);
         bst.remove(40);
         System.out.println("Range: " + bst.rangeKey(0, 100));
+        System.out.println("Range: " + bst.rangeKey(4, 6));
+        System.out.println("Range: " + bst.rangeKey(7, 10));
     }
 
     @Test
@@ -113,13 +115,13 @@ class AVLTreeTest {
         long f = bst.nextKey(60);
         long g = bst.nextKey(0);
 
-        Assertions.assertEquals(20, a);
-        Assertions.assertEquals(30, b);
-        Assertions.assertEquals(40, c);
-        Assertions.assertEquals(50, d);
-        Assertions.assertEquals(-2, e);
-        Assertions.assertEquals(-2, f);
-        Assertions.assertEquals(10, g);
+        Assertions.assertEquals(20, bst.nextKey(10));
+        Assertions.assertEquals(30, bst.nextKey(20));
+        Assertions.assertEquals(40, bst.nextKey(30));
+        Assertions.assertEquals(50, bst.nextKey(40));
+        Assertions.assertEquals(-2, bst.nextKey(50));
+        Assertions.assertEquals(-2, bst.nextKey(60));
+        Assertions.assertEquals(10, bst.nextKey(0));
     }
 
     @Test

@@ -171,13 +171,13 @@ public class AVLTree {
     private int rangeTraversal(long min, long max, Node curr) {
         int sum = 0;
         if (!this.isExternal(curr)) {
-            if (curr.key > min && curr.key < max) {
+            if (curr.key >= min && curr.key <= max) {
                 sum++;
             }
-            if (curr.key > min) {
+            if (curr.key >= min) {
                 sum += rangeTraversal(min, max, curr.left);
             }
-            if (curr.key < max) {
+            if (curr.key <= max) {
                 sum += rangeTraversal(min, max, curr.right);
             }
         }
@@ -342,6 +342,10 @@ public class AVLTree {
     //--------------- Next ---------------//
 
     public long nextKey(long key) {
+        Node node = this.search(key, this.root);
+        if(node == null) {
+            // TODO: Exception KEY NOT FOUND
+        }
         Node next = this.searchNext(key, this.root, null);
         if (next != null) return next.key;
 
@@ -368,6 +372,10 @@ public class AVLTree {
     //--------------- Prev ---------------//
 
     public long prevKey(long key) {
+        Node node = this.search(key, this.root);
+        if(node == null) {
+            // TODO: Exception KEY NOT FOUND
+        }
         Node prev = this.searchPrevious(key, this.root, null);
         if (prev != null) return prev.key;
 
