@@ -19,7 +19,7 @@ public class LinkedList {
         this.tail = null;
     }
 
-    // search
+    //------------ SEARCH -------------//
     public String get(long key) {
         Node n = this.search(key);
         return n == null ? null : n.value;
@@ -27,10 +27,10 @@ public class LinkedList {
 
     private Node search(long key) {
         Node curr = this.head;
-        while(curr != null) {
-            if(curr.key == key) {
+        while (curr != null) {
+            if (curr.key == key) {
                 return curr;
-            } else if(curr.key > key) {
+            } else if (curr.key > key) {
                 System.out.printf("Stopping the search for %d at %d\n", key, curr.key);
                 return null;
             } else {
@@ -40,51 +40,22 @@ public class LinkedList {
         return null;
     }
 
-    // insert new key
-    // replace old value if key already exists, and return old value
+
+    //------------ INSERTION -------------//
     public String put(long key, String value) {
-        // search if key already exists
-        Node old = this.search(key);
-        if(old == null) {
-            // insert new key
-            this.insertAtHead(key, value);
-        } else {
-            // replace existing value
-            String oldValue = old.value;
-            old.value = value;
-            return oldValue;
-        }
-        return null;
-    }
-
-    // inserts new node at head
-    private void insertAtHead(long key, String value) {
-        Node n = new Node(key, value);
-        if(this.head == null) {
-            this.head = n;
-            this.tail = n;
-        } else {
-            n.next = this.head;
-            this.head.prev = n;
-            this.head = n;
-        }
-    }
-
-    // TODO: This will become put()
-    public String insertSorted(long key, String value) {
         Node n = new Node(key, value);
         Node curr = this.head;
 
-        if(this.head == null) {
+        if (this.head == null) {
             this.head = n;
             this.tail = n;
             return null;
         }
 
-        while(curr != null) {
+        while (curr != null) {
             if (key < curr.key) {
                 // insert before curr
-                if(curr == this.head) {
+                if (curr == this.head) {
                     n.next = curr;
                     curr.prev = n;
                     this.head = n;
@@ -100,7 +71,7 @@ public class LinkedList {
                 String oldVal = curr.value;
                 curr.value = value;
                 return oldVal;
-            } else if(curr == this.tail) {
+            } else if (curr == this.tail) {
                 curr.next = n;
                 n.prev = curr;
                 this.tail = n;
@@ -114,9 +85,10 @@ public class LinkedList {
     }
 
     // remove
+    //------------ REMOVAL -------------//
     public String remove(long key) {
         Node n = this.search(key);
-        if(n == null || this.head == null) {
+        if (n == null || this.head == null) {
             return null;
         }
 
@@ -126,26 +98,28 @@ public class LinkedList {
 
     private void removeNode(Node node) {
 
-        if(node == this.head) {
+        if (node == this.head) {
             this.head = node.next;
         }
 
-        if(node == this.tail) {
+        if (node == this.tail) {
             this.tail = node.prev;
         }
 
-        if(node.next != null) {
+        if (node.next != null) {
             node.next.prev = node.prev;
         }
 
-        if(node.prev != null) {
+        if (node.prev != null) {
             node.prev.next = node.next;
         }
     }
 
+
+    //------------ PREV NEXT -------------//
     public long prevKey(long key) {
         Node n = this.search(key);
-        if(n == null || n.prev == null) {
+        if (n == null || n.prev == null) {
             return -1; // TODO: add exception
         }
 
@@ -154,7 +128,7 @@ public class LinkedList {
 
     public long nextKey(long key) {
         Node n = this.search(key);
-        if(n == null || n.next == null) {
+        if (n == null || n.next == null) {
             return -1; // TODO: add exception
         }
 
@@ -187,7 +161,7 @@ public class LinkedList {
     public String allKeys() {
         String keys = "";
         Node curr = this.head;
-        while(curr != null) {
+        while (curr != null) {
             keys += curr.key + ", ";
             curr = curr.next;
         }
