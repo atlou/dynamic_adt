@@ -1,7 +1,10 @@
+package tests;
+
 import java.util.Random;
 import java.util.Arrays;
 
 
+import main.AVLTree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

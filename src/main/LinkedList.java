@@ -1,3 +1,5 @@
+package main;
+
 public class LinkedList {
     private class Node {
         long key;

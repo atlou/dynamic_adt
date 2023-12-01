@@ -1,8 +1,8 @@
+package tests;
+
+import main.LinkedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 class LinkedListTest {
 

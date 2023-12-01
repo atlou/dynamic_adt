@@ -1,3 +1,5 @@
+package main;
+
 public class CleverSIDC {
 
     public CleverSIDC(int size) {
