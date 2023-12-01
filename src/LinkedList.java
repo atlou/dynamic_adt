@@ -161,6 +161,28 @@ public class LinkedList {
         return n.next.key;
     }
 
+    //------------ RANGE -------------//
+    public int rangeKey(long key1, long key2) {
+        // iterate through list starting at key 1
+        // stop when key 2 is reached
+        int r = 0;
+        if (key1 > key2) {
+            long temp = key1;
+            key1 = key2;
+            key2 = temp;
+        }
+        Node curr = this.head;
+        while (curr != null && curr.key <= key2) {
+            if (curr.key >= key1) {
+                System.out.printf("key %d is within %d and %d\n", curr.key, key1, key2);
+                r++;
+            }
+            curr = curr.next;
+        }
+
+        return r;
+    }
+
     // getAll
     public String allKeys() {
         String keys = "";

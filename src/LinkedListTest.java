@@ -2,11 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LinkedListTest {
 
@@ -19,7 +15,7 @@ class LinkedListTest {
         }
 
         String s = list.remove(4);
-        Assertions.assertEquals(s, "4");
+        Assertions.assertEquals("4", s);
 
         for(int i = 0; i < 10; i++) {
             list.remove(i);
@@ -46,7 +42,7 @@ class LinkedListTest {
 
         for(int i = 100; i > 0; i--) {
             int randomNum = ThreadLocalRandom.current().nextInt(1, 100 + 1);
-            list.insertSorted(randomNum, Integer.toString(i));
+            list.put(randomNum, Integer.toString(i));
             keys.add((long) randomNum);
         }
 
@@ -58,7 +54,7 @@ class LinkedListTest {
         LinkedList list = new LinkedList();
 
         for(int i = 0; i < 100; i += 5) {
-            list.insertSorted(i, Integer.toString(i));
+            list.put(i, Integer.toString(i));
         }
 
         Assertions.assertEquals("90", list.get(90));
@@ -72,7 +68,7 @@ class LinkedListTest {
         LinkedList list = new LinkedList();
 
         for(int i = 0; i < 100; i += 5) {
-            list.insertSorted(i, Integer.toString(i));
+            list.put(i, Integer.toString(i));
         }
 
         Assertions.assertEquals(30, list.prevKey(35));
@@ -87,7 +83,7 @@ class LinkedListTest {
         LinkedList list = new LinkedList();
 
         for(int i = 0; i < 100; i += 5) {
-            list.insertSorted(i, Integer.toString(i));
+            list.put(i, Integer.toString(i));
         }
 
         Assertions.assertEquals(30, list.nextKey(25));
@@ -95,6 +91,20 @@ class LinkedListTest {
         Assertions.assertEquals(5, list.nextKey(0));
         Assertions.assertEquals(-1, list.nextKey(100));
         Assertions.assertEquals(-1, list.nextKey(-5));
+    }
+
+    @Test
+    void rangeKey() {
+        LinkedList list = new LinkedList();
+
+        for(int i = 0; i < 100; i++) {
+            list.put(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(1, list.rangeKey(-10, 0));
+        Assertions.assertEquals(11, list.rangeKey(0, 10));
+        Assertions.assertEquals(11, list.rangeKey(20, 30));
+        Assertions.assertEquals(100, list.rangeKey(100, -100));
     }
 
 }
