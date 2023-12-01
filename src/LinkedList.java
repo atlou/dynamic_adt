@@ -97,24 +97,19 @@ public class LinkedList {
     }
 
     private void removeNode(Node node) {
-
         if (node == this.head) {
             this.head = node.next;
         }
-
         if (node == this.tail) {
             this.tail = node.prev;
         }
-
         if (node.next != null) {
             node.next.prev = node.prev;
         }
-
         if (node.prev != null) {
             node.prev.next = node.next;
         }
     }
-
 
     //------------ PREV NEXT -------------//
     public long prevKey(long key) {
@@ -148,7 +143,7 @@ public class LinkedList {
         Node curr = this.head;
         while (curr != null && curr.key <= key2) {
             if (curr.key >= key1) {
-                System.out.printf("key %d is within %d and %d\n", curr.key, key1, key2);
+//                System.out.printf("key %d is within %d and %d\n", curr.key, key1, key2);
                 r++;
             }
             curr = curr.next;
@@ -157,14 +152,19 @@ public class LinkedList {
         return r;
     }
 
-    // getAll
-    public String allKeys() {
-        String keys = "";
+    //------------ ALL KEYS -------------//
+    public long[] allKeys() {
+        int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
+        long[] keys = new long[n];
+
         Node curr = this.head;
+        int i = 0;
         while (curr != null) {
-            keys += curr.key + ", ";
+            keys[i] = curr.key;
             curr = curr.next;
+            i++;
         }
+
         return keys;
     }
 }

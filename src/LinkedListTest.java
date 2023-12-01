@@ -10,43 +10,50 @@ class LinkedListTest {
     void remove() {
         LinkedList list = new LinkedList();
 
+        long[] keys = new long[100];
+
+        for(int i = 0; i < 100; i++) {
+            list.put(i, Integer.toString(i));
+        }
+
+        for(int i = 0; i < 100; i++) {
+            list.remove(i);
+        }
+
+        Assertions.assertArrayEquals(new long[0], list.allKeys());
+
         for(int i = 0; i < 10; i++) {
             list.put(i, Integer.toString(i));
         }
 
-        String s = list.remove(4);
-        Assertions.assertEquals("4", s);
+        list.remove(4);
+        Assertions.assertArrayEquals(new long[] {0, 1, 2, 3, 5, 6, 7, 8, 9}, list.allKeys());
 
-        for(int i = 0; i < 10; i++) {
-            list.remove(i);
-        }
+        list.remove(0);
+        Assertions.assertArrayEquals(new long[] {1, 2, 3, 5, 6, 7, 8, 9}, list.allKeys());
 
-        Assertions.assertEquals("", list.allKeys());
+        list.remove(9);
+        Assertions.assertArrayEquals(new long[] {1, 2, 3, 5, 6, 7, 8}, list.allKeys());
+
+        list.remove(4);
+        Assertions.assertArrayEquals(new long[] {1, 2, 3, 5, 6, 7, 8}, list.allKeys());
     }
 
     @Test
     void put() {
         LinkedList list = new LinkedList();
 
-        for(int i = 0; i < 10; i++) {
+        long[] keys = new long[100];
+
+        for(int i = 0; i < 100; i++) {
+            keys[i] = i;
+        }
+
+        for(int i = 99; i >= 0; i--) {
             list.put(i, Integer.toString(i));
         }
 
-        Assertions.assertEquals("9, 8, 7, 6, 5, 4, 3, 2, 1, 0, ", list.allKeys());
-    }
-
-    @Test
-    void insertSorted() {
-        LinkedList list = new LinkedList();
-        ArrayList<Long> keys = new ArrayList<>();
-
-        for(int i = 100; i > 0; i--) {
-            int randomNum = ThreadLocalRandom.current().nextInt(1, 100 + 1);
-            list.put(randomNum, Integer.toString(i));
-            keys.add((long) randomNum);
-        }
-
-        System.out.println(list.allKeys());
+        Assertions.assertArrayEquals(keys, list.allKeys());
     }
 
     @Test
@@ -105,6 +112,20 @@ class LinkedListTest {
         Assertions.assertEquals(11, list.rangeKey(0, 10));
         Assertions.assertEquals(11, list.rangeKey(20, 30));
         Assertions.assertEquals(100, list.rangeKey(100, -100));
+    }
+
+    @Test
+    void allKeys() {
+        LinkedList list = new LinkedList();
+
+        long[] keys = new long[100];
+
+        for(int i = 0; i < 100; i++) {
+            list.put(i, Integer.toString(i));
+            keys[i] = i;
+        }
+
+        Assertions.assertArrayEquals(keys, list.allKeys());
     }
 
 }
