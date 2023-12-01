@@ -1,9 +1,6 @@
-package benchmarks;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
-import avl.*;
 
 public class Benchmarks {
     public static void main(String[] args) {

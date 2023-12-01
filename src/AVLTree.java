@@ -1,5 +1,3 @@
-package avl;
-
 public class AVLTree {
     private class Node {
         long key;

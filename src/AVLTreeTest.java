@@ -1,7 +1,3 @@
-package tests;
-
-import avl.*;
-
 import java.util.Random;
 import java.util.Arrays;
 
