@@ -61,15 +61,40 @@ class LinkedListTest {
             list.insertSorted(i, Integer.toString(i));
         }
 
-        String key90 = list.get(90);
-        String key200 = list.get(200);
-        String key8 = list.get(8);
-        String key0 = list.get(0);
+        Assertions.assertEquals("90", list.get(90));
+        Assertions.assertEquals("0", list.get(0));
+        Assertions.assertEquals(null, list.get(200));
+        Assertions.assertEquals(null, list.get(8));
+    }
 
-        Assertions.assertEquals(key90, "90");
-        Assertions.assertEquals(key200, null);
-        Assertions.assertEquals(key8, null);
-        Assertions.assertEquals(key0, "0");
+    @Test
+    void prevKey() {
+        LinkedList list = new LinkedList();
+
+        for(int i = 0; i < 100; i += 5) {
+            list.insertSorted(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(30, list.prevKey(35));
+        Assertions.assertEquals(25, list.prevKey(30));
+        Assertions.assertEquals(0, list.prevKey(5));
+        Assertions.assertEquals(-1, list.prevKey(0));
+        Assertions.assertEquals(-1, list.prevKey(200));
+    }
+
+    @Test
+    void nextKey() {
+        LinkedList list = new LinkedList();
+
+        for(int i = 0; i < 100; i += 5) {
+            list.insertSorted(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(30, list.nextKey(25));
+        Assertions.assertEquals(25, list.nextKey(20));
+        Assertions.assertEquals(5, list.nextKey(0));
+        Assertions.assertEquals(-1, list.nextKey(100));
+        Assertions.assertEquals(-1, list.nextKey(-5));
     }
 
 }

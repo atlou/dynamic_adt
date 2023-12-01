@@ -143,18 +143,23 @@ public class LinkedList {
         }
     }
 
-    // merge sort
+    public long prevKey(long key) {
+        Node n = this.search(key);
+        if(n == null || n.prev == null) {
+            return -1; // TODO: add exception
+        }
 
+        return n.prev.key;
+    }
 
-    // prev next
-//    public long prevKey(long key) {
-//        Node n = this.search(key);
-//        if(n == null) {
-//            return -1; // TODO: add exception
-//        }
-//
-//        return
-//    }
+    public long nextKey(long key) {
+        Node n = this.search(key);
+        if(n == null || n.next == null) {
+            return -1; // TODO: add exception
+        }
+
+        return n.next.key;
+    }
 
     // getAll
     public String allKeys() {
