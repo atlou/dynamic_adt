@@ -86,18 +86,150 @@ class CleverSIDCTest {
 
     @Test
     void getValues() {
+        CleverSIDC c = new CleverSIDC();
+        c.setSIDCThreshold(5);
 
+        for (int i = 0; i < 4; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals("0", c.getValues(0));
+        Assertions.assertEquals("2", c.getValues(2));
+        Assertions.assertEquals("3", c.getValues(3));
+        Assertions.assertEquals(null, c.getValues(10));
+
+        for (int i = 4; i < 10; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals("0", c.getValues(0));
+        Assertions.assertEquals("2", c.getValues(2));
+        Assertions.assertEquals("4", c.getValues(4));
+        Assertions.assertEquals("8", c.getValues(8));
+        Assertions.assertEquals(null, c.getValues(10));
+
+        for (int i = 9; i >= 3; i--) {
+            c.remove(i);
+        }
+
+        Assertions.assertEquals("0", c.getValues(0));
+        Assertions.assertEquals("2", c.getValues(2));
+        Assertions.assertEquals(null, c.getValues(4));
+        Assertions.assertEquals(null, c.getValues(8));
+        Assertions.assertEquals(null, c.getValues(10));
     }
 
     @Test
     void nextKey() {
+        CleverSIDC c = new CleverSIDC();
+        c.setSIDCThreshold(5);
+
+        for (int i = 0; i < 4; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(1, c.nextKey(0));
+        Assertions.assertEquals(3, c.nextKey(2));
+        Assertions.assertEquals(-2, c.nextKey(3));
+
+        for (int i = 4; i < 10; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(1, c.nextKey(0));
+        Assertions.assertEquals(3, c.nextKey(2));
+        Assertions.assertEquals(5, c.nextKey(4));
+        Assertions.assertEquals(9, c.nextKey(8));
+        Assertions.assertEquals(-2, c.nextKey(9));
+
+        for (int i = 9; i >= 3; i--) {
+            c.remove(i);
+        }
+
+        Assertions.assertEquals(1, c.nextKey(0));
+        Assertions.assertEquals(2, c.nextKey(1));
+        Assertions.assertEquals(-2, c.nextKey(2));
+        Assertions.assertEquals(-2, c.nextKey(4));
+        Assertions.assertEquals(-2, c.nextKey(8));
+        Assertions.assertEquals(-2, c.nextKey(10));
     }
 
     @Test
     void prevKey() {
+        CleverSIDC c = new CleverSIDC();
+        c.setSIDCThreshold(5);
+
+        for (int i = 0; i < 4; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(0, c.prevKey(1));
+        Assertions.assertEquals(1, c.prevKey(2));
+        Assertions.assertEquals(2, c.prevKey(3));
+        Assertions.assertEquals(-2, c.prevKey(0));
+
+        for (int i = 4; i < 10; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(-2, c.prevKey(0));
+        Assertions.assertEquals(1, c.prevKey(2));
+        Assertions.assertEquals(3, c.prevKey(4));
+        Assertions.assertEquals(7, c.prevKey(8));
+        Assertions.assertEquals(8, c.prevKey(9));
+        Assertions.assertEquals(-2, c.prevKey(10));
+
+        for (int i = 9; i >= 3; i--) {
+            c.remove(i);
+        }
+
+        Assertions.assertEquals(-2, c.prevKey(0));
+        Assertions.assertEquals(0, c.prevKey(1));
+        Assertions.assertEquals(1, c.prevKey(2));
+        Assertions.assertEquals(-2, c.prevKey(4));
+        Assertions.assertEquals(-2, c.prevKey(8));
+        Assertions.assertEquals(-2, c.prevKey(10));
     }
 
     @Test
     void rangeKey() {
+        CleverSIDC c = new CleverSIDC();
+        c.setSIDCThreshold(5);
+
+        for (int i = 0; i < 4; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(4, c.rangeKey(0, 3));
+        Assertions.assertEquals(2, c.rangeKey(0, 1));
+        Assertions.assertEquals(2, c.rangeKey(-1, 1));
+        Assertions.assertEquals(4, c.rangeKey(-1, 4));
+        Assertions.assertEquals(2, c.rangeKey(2, 1));
+
+        for (int i = 4; i < 10; i++) {
+            c.add(i, Integer.toString(i));
+        }
+
+        Assertions.assertEquals(4, c.rangeKey(0, 3));
+        Assertions.assertEquals(2, c.rangeKey(0, 1));
+        Assertions.assertEquals(2, c.rangeKey(-1, 1));
+        Assertions.assertEquals(5, c.rangeKey(-1, 4));
+        Assertions.assertEquals(2, c.rangeKey(2, 1));
+        Assertions.assertEquals(10, c.rangeKey(0, 10));
+        Assertions.assertEquals(10, c.rangeKey(0, 9));
+        Assertions.assertEquals(10, c.rangeKey(-10, 10));
+
+        for (int i = 9; i >= 3; i--) {
+            c.remove(i);
+        }
+
+        Assertions.assertEquals(3, c.rangeKey(0, 3));
+        Assertions.assertEquals(2, c.rangeKey(0, 1));
+        Assertions.assertEquals(2, c.rangeKey(-1, 1));
+        Assertions.assertEquals(3, c.rangeKey(-1, 4));
+        Assertions.assertEquals(2, c.rangeKey(2, 1));
+        Assertions.assertEquals(3, c.rangeKey(0, 10));
+        Assertions.assertEquals(3, c.rangeKey(0, 9));
+        Assertions.assertEquals(3, c.rangeKey(-10, 10));
     }
 }

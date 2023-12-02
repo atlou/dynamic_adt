@@ -365,8 +365,9 @@ public class AVLTree {
 
     public long nextKey(long key) {
         Node node = this.search(key, this.root);
-        if(node == null) {
+        if(node == null || this.isExternal(node)) {
             // TODO: Exception KEY NOT FOUND
+            return -2;
         }
         Node next = this.searchNext(key, this.root, null);
         if (next != null) return next.key;
@@ -395,8 +396,9 @@ public class AVLTree {
 
     public long prevKey(long key) {
         Node node = this.search(key, this.root);
-        if(node == null) {
+        if(node == null || this.isExternal(node)) {
             // TODO: Exception KEY NOT FOUND
+            return -2;
         }
         Node prev = this.searchPrevious(key, this.root, null);
         if (prev != null) return prev.key;

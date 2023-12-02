@@ -123,21 +123,21 @@ public class CleverSIDC {
 
     // return the values of the given key
     public String getValues(long key) {
-        return "";
+        return this.largeData ? this.avl.getValue(key) : this.list.get(key);
     }
 
     // return the key for the successor of key
-    public int nextKey(long key) {
-        return 0;
+    public long nextKey(long key) {
+        return this.largeData ? this.avl.nextKey(key) : this.list.nextKey(key);
     }
 
     // return the key for the predecessor of key
-    public int prevKey(long key) {
-        return 0;
+    public long prevKey(long key) {
+        return this.largeData ? this.avl.prevKey(key) : this.list.prevKey(key);
     }
 
     // returns the number of keys that are within the specified range of the two keys
     public int rangeKey(long key1, long key2) {
-        return 0;
+        return this.largeData ? this.avl.rangeKey(key1, key2) : this.list.rangeKey(key1, key2);
     }
 }

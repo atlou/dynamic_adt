@@ -117,7 +117,7 @@ public class LinkedList {
     public long prevKey(long key) {
         Node n = this.search(key);
         if (n == null || n.prev == null) {
-            return -1; // TODO: add exception
+            return -2; // TODO: add exception
         }
 
         return n.prev.key;
@@ -126,7 +126,7 @@ public class LinkedList {
     public long nextKey(long key) {
         Node n = this.search(key);
         if (n == null || n.next == null) {
-            return -1; // TODO: add exception
+            return -2; // TODO: add exception
         }
 
         return n.next.key;
