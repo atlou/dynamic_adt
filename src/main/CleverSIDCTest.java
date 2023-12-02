@@ -15,6 +15,13 @@ class CleverSIDCTest {
 
     @Test
     void generate() {
+        CleverSIDC c = new CleverSIDC();
+        for(int i = 0; i < 10; i++) {
+            long key = c.generate();
+            c.add(key, Long.toString(key));
+        }
+
+        System.out.println(Arrays.toString(c.allKeys()));
     }
 
     @Test

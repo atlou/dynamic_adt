@@ -1,5 +1,7 @@
 package main;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CleverSIDC {
 
     private boolean largeData;
@@ -71,8 +73,25 @@ public class CleverSIDC {
 
     // randomly generates new non-existing key of 8 digits
     public long generate() {
+        int maxAttempts = 10000;
+        long min = 1;
+        long max = 10;
+//        long min = 10000000;
+//        long max = 100000000;
+        long key;
+        String v;
+        int i = 0;
+        do {
+            key = ThreadLocalRandom.current().nextLong(min, max);
+            v = this.largeData ? this.avl.getValue(key) : this.list.get(key);
+            i++;
+            if(i == maxAttempts) {
+                System.out.printf("Gave up generating a new key after %d failed attempts.\n", maxAttempts); // TODO: Add exception?
+                return -1;
+            }
+        } while (v != null);
 
-        return 0;
+        return key;
     }
 
     // return all keys in sorted sequence

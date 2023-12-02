@@ -33,7 +33,7 @@ public class LinkedList {
             if (curr.key == key) {
                 return curr;
             } else if (curr.key > key) {
-                System.out.printf("Stopping the search for %d at %d\n", key, curr.key);
+//                System.out.printf("Stopping the search for %d at %d\n", key, curr.key);
                 return null;
             } else {
                 curr = curr.next;
