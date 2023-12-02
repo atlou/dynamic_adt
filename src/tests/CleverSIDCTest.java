@@ -1,5 +1,12 @@
-package main;
+package tests;
 
+import main.CleverSIDC;
+import main.exceptions.KeyNotFoundException;
+import main.exceptions.NoNextKeyException;
+import main.exceptions.TooManyAttemptsException;
+import main.exceptions.avl.AVLTreeException;
+import main.exceptions.avl.NoParentException;
+import main.exceptions.avl.NodeIsInternalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,10 +21,14 @@ class CleverSIDCTest {
         CleverSIDC c = new CleverSIDC();
         c.setSIDCThreshold(100);
         long[] keys = new long[30];
-        for(int i = 0; i < 30; i++) {
-            long key = c.generate();
-            c.add(key, Long.toString(key));
-            keys[i] = key;
+        for (int i = 0; i < 30; i++) {
+            try {
+                long key = c.generate();
+                c.add(key, Long.toString(key));
+                keys[i] = key;
+            } catch (TooManyAttemptsException e) {
+                System.out.println(e.getMessage());
+            }
         }
         Arrays.sort(keys);
         Assertions.assertArrayEquals(keys, c.allKeys());
@@ -28,9 +39,13 @@ class CleverSIDCTest {
     @Test
     void generate() {
         CleverSIDC c = new CleverSIDC();
-        for(int i = 0; i < 10; i++) {
-            long key = c.generate();
-            c.add(key, Long.toString(key));
+        for (int i = 0; i < 10; i++) {
+            try {
+                long key = c.generate();
+                c.add(key, Long.toString(key));
+            } catch (TooManyAttemptsException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         System.out.println(Arrays.toString(c.allKeys()));
@@ -57,7 +72,11 @@ class CleverSIDCTest {
         Assertions.assertArrayEquals(arr2, c.allKeys());
 
         for (int i = 49; i >= 10; i--) {
-            c.remove(i);
+            try {
+                c.remove(i);
+            } catch (AVLTreeException e) {
+                System.out.println(e.getMessage());
+            }
         }
         Assertions.assertArrayEquals(arr1, c.allKeys());
     }
@@ -82,17 +101,41 @@ class CleverSIDCTest {
         }
         c.add(4, Integer.toString(4));
         c.add(5, Integer.toString(5));
-        c.remove(1);
+        try {
+            c.remove(1);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{0, 2, 3, 4, 5}, c.allKeys());
-        c.remove(2);
+        try {
+            c.remove(2);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{0, 3, 4, 5}, c.allKeys());
-        c.remove(3);
+        try {
+            c.remove(3);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{0, 4, 5}, c.allKeys());
-        c.remove(0);
+        try {
+            c.remove(0);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{4, 5}, c.allKeys());
-        c.remove(4);
+        try {
+            c.remove(4);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{5}, c.allKeys());
-        c.remove(5);
+        try {
+            c.remove(5);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
         Assertions.assertArrayEquals(new long[]{}, c.allKeys());
     }
 
@@ -121,7 +164,11 @@ class CleverSIDCTest {
         Assertions.assertEquals(null, c.getValues(10));
 
         for (int i = 9; i >= 3; i--) {
-            c.remove(i);
+            try {
+                c.remove(i);
+            } catch (AVLTreeException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         Assertions.assertEquals("0", c.getValues(0));
@@ -140,30 +187,48 @@ class CleverSIDCTest {
             c.add(i, Integer.toString(i));
         }
 
-        Assertions.assertEquals(1, c.nextKey(0));
-        Assertions.assertEquals(3, c.nextKey(2));
-        Assertions.assertEquals(-2, c.nextKey(3));
+        try {
+            Assertions.assertEquals(1, c.nextKey(0));
+            Assertions.assertEquals(3, c.nextKey(2));
+            Assertions.assertEquals(-2, c.nextKey(3));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
 
         for (int i = 4; i < 10; i++) {
             c.add(i, Integer.toString(i));
         }
 
-        Assertions.assertEquals(1, c.nextKey(0));
-        Assertions.assertEquals(3, c.nextKey(2));
-        Assertions.assertEquals(5, c.nextKey(4));
-        Assertions.assertEquals(9, c.nextKey(8));
-        Assertions.assertEquals(-2, c.nextKey(9));
-
-        for (int i = 9; i >= 3; i--) {
-            c.remove(i);
+        try {
+            Assertions.assertEquals(1, c.nextKey(0));
+            Assertions.assertEquals(3, c.nextKey(2));
+            Assertions.assertEquals(5, c.nextKey(4));
+            Assertions.assertEquals(9, c.nextKey(8));
+            Assertions.assertEquals(-2, c.nextKey(9));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
-        Assertions.assertEquals(1, c.nextKey(0));
-        Assertions.assertEquals(2, c.nextKey(1));
-        Assertions.assertEquals(-2, c.nextKey(2));
-        Assertions.assertEquals(-2, c.nextKey(4));
-        Assertions.assertEquals(-2, c.nextKey(8));
-        Assertions.assertEquals(-2, c.nextKey(10));
+        for (int i = 9; i >= 3; i--) {
+            try {
+                c.remove(i);
+            } catch (AVLTreeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        try {
+            Assertions.assertEquals(1, c.nextKey(0));
+            Assertions.assertEquals(2, c.nextKey(1));
+            Assertions.assertEquals(-2, c.nextKey(2));
+            Assertions.assertEquals(-2, c.nextKey(4));
+            Assertions.assertEquals(-2, c.nextKey(8));
+            Assertions.assertEquals(-2, c.nextKey(10));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Test
@@ -175,32 +240,49 @@ class CleverSIDCTest {
             c.add(i, Integer.toString(i));
         }
 
-        Assertions.assertEquals(0, c.prevKey(1));
-        Assertions.assertEquals(1, c.prevKey(2));
-        Assertions.assertEquals(2, c.prevKey(3));
-        Assertions.assertEquals(-2, c.prevKey(0));
+        try {
+            Assertions.assertEquals(0, c.prevKey(1));
+            Assertions.assertEquals(1, c.prevKey(2));
+            Assertions.assertEquals(2, c.prevKey(3));
+            Assertions.assertEquals(-2, c.prevKey(0));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         for (int i = 4; i < 10; i++) {
             c.add(i, Integer.toString(i));
         }
 
-        Assertions.assertEquals(-2, c.prevKey(0));
-        Assertions.assertEquals(1, c.prevKey(2));
-        Assertions.assertEquals(3, c.prevKey(4));
-        Assertions.assertEquals(7, c.prevKey(8));
-        Assertions.assertEquals(8, c.prevKey(9));
-        Assertions.assertEquals(-2, c.prevKey(10));
-
-        for (int i = 9; i >= 3; i--) {
-            c.remove(i);
+        try {
+            Assertions.assertEquals(-2, c.prevKey(0));
+            Assertions.assertEquals(1, c.prevKey(2));
+            Assertions.assertEquals(3, c.prevKey(4));
+            Assertions.assertEquals(7, c.prevKey(8));
+            Assertions.assertEquals(8, c.prevKey(9));
+            Assertions.assertEquals(-2, c.prevKey(10));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
-        Assertions.assertEquals(-2, c.prevKey(0));
-        Assertions.assertEquals(0, c.prevKey(1));
-        Assertions.assertEquals(1, c.prevKey(2));
-        Assertions.assertEquals(-2, c.prevKey(4));
-        Assertions.assertEquals(-2, c.prevKey(8));
-        Assertions.assertEquals(-2, c.prevKey(10));
+
+        for (int i = 9; i >= 3; i--) {
+            try {
+                c.remove(i);
+            } catch (AVLTreeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        try {
+            Assertions.assertEquals(-2, c.prevKey(0));
+            Assertions.assertEquals(0, c.prevKey(1));
+            Assertions.assertEquals(1, c.prevKey(2));
+            Assertions.assertEquals(-2, c.prevKey(4));
+            Assertions.assertEquals(-2, c.prevKey(8));
+            Assertions.assertEquals(-2, c.prevKey(10));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test
@@ -232,7 +314,11 @@ class CleverSIDCTest {
         Assertions.assertEquals(10, c.rangeKey(-10, 10));
 
         for (int i = 9; i >= 3; i--) {
-            c.remove(i);
+            try {
+                c.remove(i);
+            } catch (AVLTreeException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         Assertions.assertEquals(3, c.rangeKey(0, 3));

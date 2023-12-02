@@ -1,5 +1,11 @@
 package main;
 
+import main.exceptions.KeyNotFoundException;
+import main.exceptions.NoNextKeyException;
+import main.exceptions.NoPrevKeyException;
+import main.exceptions.avl.NoParentException;
+import main.exceptions.avl.NodeIsInternalException;
+
 public class AVLTree {
     private class Node {
         long key;
@@ -37,10 +43,10 @@ public class AVLTree {
             right-left (Z<X<Y)
          */
         int bal = this.balanceFactor(z);
-        if(bal > 1) {
+        if (bal > 1) {
             // left heavy
             Node y = z.left;
-            if(this.balanceFactor(y) >= 0) {
+            if (this.balanceFactor(y) >= 0) {
                 z = rotationRight(z);
             } else {
                 z = rotationLeftRight(z);
@@ -50,7 +56,7 @@ public class AVLTree {
         if (bal < -1) {
             // right heavy
             Node y = z.right;
-            if(this.balanceFactor(y) <= 0) {
+            if (this.balanceFactor(y) <= 0) {
                 z = rotationLeft(z);
             } else {
                 z = rotationRightLeft(z);
@@ -61,7 +67,7 @@ public class AVLTree {
     }
 
     private int getHeight(Node node) {
-        if(node == null) {
+        if (node == null) {
             return 0;
         }
         return node.height;
@@ -74,7 +80,7 @@ public class AVLTree {
     // positive number -> left heavy
     // negative number -> right heavy
     private int balanceFactor(Node node) {
-        if(isExternal(node)) {
+        if (isExternal(node)) {
             return 0;
         } else {
             return getHeight(node.left) - getHeight(node.right);
@@ -118,12 +124,12 @@ public class AVLTree {
 
     private Node firstUnbalanced(Node curr) {
         Node p = this.getParent(curr);
-        if(p == null) {
+        if (p == null) {
             return null;
         }
 
         this.updateHeight(p);
-        if(this.isUnbalanced(p)) {
+        if (this.isUnbalanced(p)) {
             return p;
         }
 
@@ -205,7 +211,7 @@ public class AVLTree {
 
     //--------------- Removal ---------------//
 
-    public String remove(long key) {
+    public String remove(long key) throws NodeIsInternalException, NoParentException {
         Node n = this.getNode(key);
         if (n == null) return null;
 
@@ -231,28 +237,24 @@ public class AVLTree {
     }
 
     // removes node and its parent
-    // TODO: Add exceptions instead of prints
-    private void removeExternal(Node node) {
+    private void removeExternal(Node node) throws NodeIsInternalException, NoParentException {
         if (!this.isExternal(node)) {
-            System.out.printf("removeExternal fail: %d is not external.\n", node.key);
-            return;
+            throw new NodeIsInternalException(node.key);
         }
 
         Node p = this.getParent(node);
-
         if (p == null) {
-            System.out.printf("Could not find parent of %d.\n", node.key);
-            return;
+            throw new NoParentException(node.key);
         }
+
         Node gp = this.getParent(p);
         if (gp == null) {
-            System.out.printf("Could not find parent of %d.\n", p.key);
-            return;
+            throw new NoParentException(p.key);
         }
 
         Node otherChild = p.left == node ? p.right : p.left;
 
-        if(this.isExternal(otherChild)) {
+        if (this.isExternal(otherChild)) {
             // if the other child is external, create a new external node with the gp key
             otherChild = new Node(gp.key);
         }
@@ -266,13 +268,13 @@ public class AVLTree {
         this.updateHeight(gp);
 
         Node z = this.firstUnbalanced(gp);
-        while(z != null) {
+        while (z != null) {
             Node b = this.restructure(z);
-            if(z == this.root) {
+            if (z == this.root) {
                 this.root = b;
             } else {
                 Node c = this.getParent(z);
-                if(c.right == z) {
+                if (c.right == z) {
                     c.right = b;
                 } else {
                     c.left = b;
@@ -296,13 +298,13 @@ public class AVLTree {
             this.updateHeight(n);
 
             Node z = this.firstUnbalanced(n);
-            if(z != null) {
+            if (z != null) {
                 Node b = this.restructure(z);
-                if(z == this.root) {
+                if (z == this.root) {
                     this.root = b;
                 } else {
                     Node p = this.getParent(z);
-                    if(p.right == z) {
+                    if (p.right == z) {
                         p.right = b;
                     } else {
                         p.left = b;
@@ -363,16 +365,16 @@ public class AVLTree {
 
     //--------------- Next ---------------//
 
-    public long nextKey(long key) {
+    public long nextKey(long key) throws KeyNotFoundException, NoNextKeyException {
         Node node = this.search(key, this.root);
-        if(node == null || this.isExternal(node)) {
-            // TODO: Exception KEY NOT FOUND
-            return -2;
+        if (node == null || this.isExternal(node)) {
+            throw new KeyNotFoundException(key);
         }
         Node next = this.searchNext(key, this.root, null);
-        if (next != null) return next.key;
-
-        return -2; // TODO: Implement exception instead
+        if (next == null) {
+            throw new NoNextKeyException(key);
+        }
+        return next.key;
     }
 
     private Node searchNext(long key, Node curr, Node best) {
@@ -394,16 +396,17 @@ public class AVLTree {
 
     //--------------- Prev ---------------//
 
-    public long prevKey(long key) {
+    public long prevKey(long key) throws KeyNotFoundException, NoPrevKeyException {
         Node node = this.search(key, this.root);
-        if(node == null || this.isExternal(node)) {
-            // TODO: Exception KEY NOT FOUND
-            return -2;
+        if (node == null || this.isExternal(node)) {
+            throw new KeyNotFoundException(key);
         }
         Node prev = this.searchPrevious(key, this.root, null);
-        if (prev != null) return prev.key;
+        if (prev == null) {
+            throw new NoPrevKeyException(key);
+        }
 
-        return -2; // TODO: Implement exception instead
+        return prev.key;
     }
 
     private Node searchPrevious(long key, Node curr, Node best) {
