@@ -15,7 +15,7 @@ public class CleverSIDC {
 
     public CleverSIDC() {
         this.largeData = false;
-        this.threshold = 10000; // TODO: Find best threshold
+        this.threshold = 3000; // 3k seems to be the most efficient threshold
         this.count = 0;
         this.list = new LinkedList();
         this.avl = new AVLTree();
