@@ -206,8 +206,6 @@ public class AVLTree {
     //--------------- Removal ---------------//
 
     public String remove(long key) {
-        System.out.println("Removing key " + key);
-
         Node n = this.getNode(key);
         if (n == null) return null;
 
@@ -253,6 +251,11 @@ public class AVLTree {
         }
 
         Node otherChild = p.left == node ? p.right : p.left;
+
+        if(this.isExternal(otherChild)) {
+            // if the other child is external, create a new external node with the gp key
+            otherChild = new Node(gp.key);
+        }
 
         if (gp.right == p) {
             gp.right = otherChild;

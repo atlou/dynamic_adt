@@ -63,15 +63,15 @@ public class CleverSIDC {
         this.avl = new AVLTree();
     }
 
-    // where 100 ≤ Size ≤ ~500,000 is an integer number that defines
-    // the size of the list. This size is very important as it will determine what data types or data
-    // structures will be used (i.e. a Tree, Hash Table, AVL tree, binary tree, sequence, etc.)
+    // sets the threshold at which the data structure switches from a linked list to an avl tree,
+    // and vice-versa
     public void setSIDCThreshold(int threshold) {
         this.threshold = threshold;
     }
 
     // randomly generates new non-existing key of 8 digits
     public long generate() {
+
         return 0;
     }
 
@@ -93,7 +93,13 @@ public class CleverSIDC {
 
     // remove the entry for the given key
     public String remove(long key) {
-        return "";
+        String s = this.largeData ? this.avl.remove(key) : this.list.remove(key);
+
+        if(s != null) {
+            this.decrementCount();
+        }
+
+        return s;
     }
 
     // return the values of the given key
