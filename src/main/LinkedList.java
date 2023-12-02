@@ -169,4 +169,19 @@ public class LinkedList {
 
         return keys;
     }
+
+    public String[] allData() {
+        int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
+        String[] data = new String[n];
+
+        Node curr = this.head;
+        int i = 0;
+        while (curr != null) {
+            data[i] = curr.value;
+            curr = curr.next;
+            i++;
+        }
+
+        return data;
+    }
 }

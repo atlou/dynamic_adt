@@ -137,20 +137,39 @@ public class AVLTree {
     public long[] allKeys() {
         int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
         long[] keys = new long[n];
-        inorder(this.root, keys, 0);
+        inorderKeys(this.root, keys, 0);
 //        System.out.printf("[Root] key: %d, height: %d, balance: %d\n", this.root.key, this.root.height, this.balanceFactor(this.root));
 //        System.out.printf("[Left] key: %d, height: %d, balance: %d\n", this.root.left.key,  this.root.left.height, this.balanceFactor(this.root.left));
 //        System.out.printf("[Right] key: %d, height: %d, balance: %d\n", this.root.right.key, this.root.right.height, this.balanceFactor(this.root.right));
         return keys;
     }
 
-    private int inorder(Node node, long[] arr, int i) {
+    public String[] allData() {
+        int n = this.rangeKey(Long.MIN_VALUE, Long.MAX_VALUE);
+        String[] data = new String[n];
+        inorderData(this.root, data, 0);
+        return data;
+    }
+
+    private int inorderKeys(Node node, long[] arr, int i) {
         if (!this.isExternal(node)) {
-            i = inorder(node.left, arr, i);
+            i = inorderKeys(node.left, arr, i);
 //            System.out.printf("Inserting key %d at i %d\n", node.key, i);
             arr[i] = node.key;
             i++;
-            i = inorder(node.right, arr, i);
+            i = inorderKeys(node.right, arr, i);
+            return i;
+        }
+        return i;
+    }
+
+    private int inorderData(Node node, String[] arr, int i) {
+        if (!this.isExternal(node)) {
+            i = inorderData(node.left, arr, i);
+//            System.out.printf("Inserting key %d at i %d\n", node.key, i);
+            arr[i] = node.value;
+            i++;
+            i = inorderData(node.right, arr, i);
             return i;
         }
         return i;
