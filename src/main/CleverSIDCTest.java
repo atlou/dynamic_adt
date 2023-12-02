@@ -11,6 +11,18 @@ class CleverSIDCTest {
 
     @Test
     void setSIDCThreshold() {
+        CleverSIDC c = new CleverSIDC();
+        c.setSIDCThreshold(100);
+        long[] keys = new long[30];
+        for(int i = 0; i < 30; i++) {
+            long key = c.generate();
+            c.add(key, Long.toString(key));
+            keys[i] = key;
+        }
+        Arrays.sort(keys);
+        Assertions.assertArrayEquals(keys, c.allKeys());
+        c.setSIDCThreshold(10);
+        Assertions.assertArrayEquals(keys, c.allKeys());
     }
 
     @Test
