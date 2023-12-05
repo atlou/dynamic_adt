@@ -1,5 +1,8 @@
 package main;
 
+import main.exceptions.NoNextKeyException;
+import main.exceptions.NoPrevKeyException;
+
 public class LinkedList {
     private class Node {
         long key;
@@ -33,7 +36,6 @@ public class LinkedList {
             if (curr.key == key) {
                 return curr;
             } else if (curr.key > key) {
-//                System.out.printf("Stopping the search for %d at %d\n", key, curr.key);
                 return null;
             } else {
                 curr = curr.next;
@@ -114,19 +116,19 @@ public class LinkedList {
     }
 
     //------------ PREV NEXT -------------//
-    public long prevKey(long key) {
+    public long prevKey(long key) throws NoPrevKeyException {
         Node n = this.search(key);
         if (n == null || n.prev == null) {
-            return -2; // TODO: add exception
+            throw new NoPrevKeyException(key);
         }
 
         return n.prev.key;
     }
 
-    public long nextKey(long key) {
+    public long nextKey(long key) throws NoNextKeyException {
         Node n = this.search(key);
         if (n == null || n.next == null) {
-            return -2; // TODO: add exception
+            throw new NoNextKeyException(key);
         }
 
         return n.next.key;
@@ -145,7 +147,6 @@ public class LinkedList {
         Node curr = this.head;
         while (curr != null && curr.key <= key2) {
             if (curr.key >= key1) {
-//                System.out.printf("key %d is within %d and %d\n", curr.key, key1, key2);
                 r++;
             }
             curr = curr.next;

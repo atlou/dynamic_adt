@@ -1,5 +1,8 @@
 package main;
 
+import main.exceptions.avl.*;
+import main.exceptions.*;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CleverSIDC {
@@ -12,7 +15,7 @@ public class CleverSIDC {
 
     public CleverSIDC() {
         this.largeData = false;
-        this.threshold = 10000; // TODO: Find best threshold
+        this.threshold = 3000; // 3k seems to be the most efficient threshold
         this.count = 0;
         this.list = new LinkedList();
         this.avl = new AVLTree();
@@ -45,7 +48,7 @@ public class CleverSIDC {
     }
 
     private void listToAVL() {
-        System.out.println("Switching from Linked List to AVL Tree");
+//        System.out.println("Switching from Linked List to AVL Tree");
         long[] keys = this.list.allKeys();
         String[] data = this.list.allData();
 
@@ -57,7 +60,7 @@ public class CleverSIDC {
     }
 
     private void avlToList() {
-        System.out.println("Switching from AVL Tree to Linked List");
+//        System.out.println("Switching from AVL Tree to Linked List");
         long[] keys = this.avl.allKeys();
         String[] data = this.avl.allData();
 
@@ -75,11 +78,19 @@ public class CleverSIDC {
         this.updateMode();
     }
 
+    public int getSIDCThreshold() {
+        return this.threshold;
+    }
+
+    public int getCount() {
+        return this.count;
+    }
+
     //------------ ADT METHODS -------------//
 
     // randomly generates new non-existing key of 8 digits
     // bruteforce a new key
-    public long generate() {
+    public long generate() throws TooManyAttemptsException {
         int maxAttempts = 10000;
         long min = 10000000;
         long max = 100000000;
@@ -91,8 +102,7 @@ public class CleverSIDC {
             v = this.largeData ? this.avl.getValue(key) : this.list.get(key);
             i++;
             if(i == maxAttempts) {
-                System.out.printf("Gave up generating a new key after %d failed attempts.\n", maxAttempts); // TODO: Add exception?
-                return -1;
+                throw new TooManyAttemptsException(String.format("Gave up generating a new key after %d failed attempts.", maxAttempts));
             }
         } while (v != null);
 
@@ -119,7 +129,7 @@ public class CleverSIDC {
 
     // remove the entry for the given key
     // if the key existed, its value is returned
-    public String remove(long key) {
+    public String remove(long key) throws NodeIsInternalException, NoParentException {
         String s = this.largeData ? this.avl.remove(key) : this.list.remove(key);
 
         if(s != null) {
@@ -137,13 +147,13 @@ public class CleverSIDC {
 
     // return the key for the successor of key
     // i.e. the smallest key that is greater than the current key
-    public long nextKey(long key) {
+    public long nextKey(long key) throws KeyNotFoundException, NoNextKeyException {
         return this.largeData ? this.avl.nextKey(key) : this.list.nextKey(key);
     }
 
     // return the key for the predecessor of key
     // i.e. the biggest key that is smaller than the current key
-    public long prevKey(long key) {
+    public long prevKey(long key) throws KeyNotFoundException, NoPrevKeyException {
         return this.largeData ? this.avl.prevKey(key) : this.list.prevKey(key);
     }
 

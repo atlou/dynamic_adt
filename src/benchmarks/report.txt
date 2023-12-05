@@ -1,0 +1,39 @@
+---------- REPORT ----------
+number of keys: 1,500,000
+threshold: 3,000
+---------- add() ----------
+operations: 1,500,000
+count: 1,274,010
+time: 3,300 ms
+---------- nextKey() ----------
+operations: 1
+count: 1,274,010
+time: 0 ms
+---------- prevKey() ----------
+operations: 1
+count: 1,274,010
+time: 0 ms
+---------- generate() ----------
+operations: 1
+count: 1,274,010
+time: 1 ms
+---------- getValues() ----------
+operations: 1
+count: 1,274,010
+time: 0 ms
+---------- rangeKey() ----------
+operations: 1
+count: 1,274,010
+time: 33 ms
+---------- allKeys() ----------
+operations: 1
+count: 1,274,010
+time: 56 ms
+---------- remove() ----------
+operations: 1
+count: 1,274,009
+time: 1 ms
+---------- add() ----------
+operations: 1
+count: 1,274,010
+time: 0 ms

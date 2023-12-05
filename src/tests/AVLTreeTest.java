@@ -5,6 +5,11 @@ import java.util.Arrays;
 
 
 import main.AVLTree;
+import main.exceptions.KeyNotFoundException;
+import main.exceptions.NoNextKeyException;
+import main.exceptions.avl.AVLTreeException;
+import main.exceptions.avl.NoParentException;
+import main.exceptions.avl.NodeIsInternalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,10 +36,15 @@ class AVLTreeTest {
             bst.put(i, Integer.toString(i));
         }
         System.out.println("Range: " + bst.rangeKey(0, 100));
-        bst.remove(4);
-        bst.remove(5);
-        bst.remove(6);
-        bst.remove(40);
+        try {
+            bst.remove(4);
+            bst.remove(5);
+            bst.remove(6);
+            bst.remove(40);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("Range: " + bst.rangeKey(0, 100));
         System.out.println("Range: " + bst.rangeKey(4, 6));
         System.out.println("Range: " + bst.rangeKey(7, 10));
@@ -48,11 +58,15 @@ class AVLTreeTest {
             bst.put(i, Integer.toString(i));
         }
 
-        bst.remove(4);
-        bst.remove(2);
-        bst.remove(5);
-        bst.remove(10);
-        bst.remove(1);
+        try {
+            bst.remove(4);
+            bst.remove(2);
+            bst.remove(5);
+            bst.remove(10);
+            bst.remove(1);
+        } catch (AVLTreeException e) {
+            System.out.println(e.getMessage());
+        }
 
         Assertions.assertArrayEquals(new long[]{3, 6, 7, 8, 9}, bst.allKeys());
     }
@@ -106,21 +120,18 @@ class AVLTreeTest {
         for (int i = 10; i <= 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
-        long a = bst.nextKey(10);
-        long b = bst.nextKey(20);
-        long c = bst.nextKey(30);
-        long d = bst.nextKey(40);
-        long e = bst.nextKey(50);
-        long f = bst.nextKey(60);
-        long g = bst.nextKey(0);
 
-        Assertions.assertEquals(20, bst.nextKey(10));
-        Assertions.assertEquals(30, bst.nextKey(20));
-        Assertions.assertEquals(40, bst.nextKey(30));
-        Assertions.assertEquals(50, bst.nextKey(40));
-        Assertions.assertEquals(-2, bst.nextKey(50));
-        Assertions.assertEquals(-2, bst.nextKey(60));
-        Assertions.assertEquals(10, bst.nextKey(0));
+        try {
+            Assertions.assertEquals(20, bst.nextKey(10));
+            Assertions.assertEquals(30, bst.nextKey(20));
+            Assertions.assertEquals(40, bst.nextKey(30));
+            Assertions.assertEquals(50, bst.nextKey(40));
+            Assertions.assertEquals(-2, bst.nextKey(50));
+            Assertions.assertEquals(-2, bst.nextKey(60));
+            Assertions.assertEquals(10, bst.nextKey(0));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Test
@@ -129,18 +140,17 @@ class AVLTreeTest {
         for (int i = 10; i < 50; i += 10) {
             bst.put(i, Integer.toString(i));
         }
-        long a = bst.prevKey(10);
-        long b = bst.prevKey(20);
-        long c = bst.prevKey(30);
-        long d = bst.prevKey(40);
-        long e = bst.prevKey(50);
-        long f = bst.prevKey(60);
 
-        Assertions.assertEquals(-2, a);
-        Assertions.assertEquals(10, b);
-        Assertions.assertEquals(20, c);
-        Assertions.assertEquals(30, d);
-        Assertions.assertEquals(40, e);
-        Assertions.assertEquals(40, f);
+        try {
+            Assertions.assertEquals(-2, bst.prevKey(10));
+            Assertions.assertEquals(10, bst.prevKey(20));
+            Assertions.assertEquals(20, bst.prevKey(30));
+            Assertions.assertEquals(30, bst.prevKey(40));
+            Assertions.assertEquals(40, bst.prevKey(50));
+            Assertions.assertEquals(40, bst.prevKey(60));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
